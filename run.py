@@ -33,11 +33,7 @@ def train(model, data, params):
         data (ATISData): The data that is used to train.
         params (namespace): Training parameters.
     """
-    
-    print("model", model)
-    print("data", data)
-    print("params", params)
-    
+
     # Get the training batches.
     log = Logger(os.path.join(params.logdir, params.logfile), "w")
     num_train_original = atis_data.num_utterances(data.train_data)
