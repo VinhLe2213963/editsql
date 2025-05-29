@@ -29,7 +29,8 @@ def get_bert(params):
 
     bert_config_file = os.path.join(BERT_PT_PATH, f'bert_config_{bert_type}.json')
     vocab_file = os.path.join(BERT_PT_PATH, f'vocab_{bert_type}.txt')
-    init_checkpoint = os.path.join(BERT_PT_PATH, f'pytorch_model_{bert_type}.bin')
+    # init_checkpoint = os.path.join(BERT_PT_PATH, f'pytorch_model_{bert_type}.bin')
+    init_checkpoint = "/kaggle/input/pytorch-model/pytorch_model_uncased_L-12_H-768_A-12.bin"
 
     print('bert_config_file', bert_config_file)
     print('vocab_file', vocab_file)
