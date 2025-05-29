@@ -7,7 +7,7 @@ from copy import deepcopy
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from transformers import AutoTokenizer, AutoModelForMaskedLM
+from transformers import AutoTokenizer, AutoModel
 
 from .bert import tokenization as tokenization
 from .bert.modeling import BertConfig, BertModel
@@ -57,7 +57,7 @@ def get_bert(params):
 
     # PhoBERT uses SentencePiece, so use_fast=False is recommended
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
-    model_phobert = AutoModelForMaskedLM.from_pretrained(model_name)
+    model_phobert = AutoModel.from_pretrained(model_name)
     phobert_config = model_phobert.config
 
     model_phobert.to(device)
