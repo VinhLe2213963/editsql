@@ -502,6 +502,13 @@ def preprocess(dataset, remove_from=False):
     if remove_from:
       output_dir = 'data/cosql_data_removefrom'
     train_database, dev_database = read_db_split(cosql_dir)
+  elif dataset == 'vi-word-level':
+    vi_word_level_dir = 'data/vi_word_level/'
+    database_scheme_filename = 'data/vi_word_level/tables.json'
+    output_dir = 'data/vi_word_level_data'
+    if remove_from:
+      output_dir = 'data/vi_word_level_data_removefrom'
+    train_database, dev_database = read_db_split(vi_word_level_dir)
 
   if os.path.isdir(output_dir):
     shutil.rmtree(output_dir)
@@ -527,6 +534,8 @@ def preprocess(dataset, remove_from=False):
     interaction_list = read_sparc(sparc_dir, database_schemas, column_names, output_vocab, schema_tokens, remove_from)
   elif dataset == 'cosql':
     interaction_list = read_cosql(cosql_dir, database_schemas, column_names, output_vocab, schema_tokens, remove_from)
+  elif dataset == 'vi-word-level':
+    interaction_list = read_spider(vi_word_level_dir, database_schemas, column_names, output_vocab, schema_tokens, remove_from)
 
   print('interaction_list length', len(interaction_list))
 
@@ -550,7 +559,7 @@ def preprocess(dataset, remove_from=False):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument("--dataset", choices=('spider', 'sparc', 'cosql'), default='sparc')
+  parser.add_argument("--dataset", choices=('spider', 'sparc', 'cosql', 'vi-word-level'), default='sparc')
   parser.add_argument('--remove_from', action='store_true', default=False)
   args = parser.parse_args()
   preprocess(args.dataset, args.remove_from)
