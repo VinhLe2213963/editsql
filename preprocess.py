@@ -504,10 +504,10 @@ def preprocess(dataset, remove_from=False):
     train_database, dev_database = read_db_split(cosql_dir)
   elif dataset == 'vi-word-level':
     vi_word_level_dir = 'data/vi-word-level/'
-    database_scheme_filename = 'data/vi_word_level/tables.json'
-    output_dir = 'data/vi_word_level_data'
+    database_scheme_filename = 'data/vi-word-level/tables.json'
+    output_dir = 'data/vi-word-level_data'
     if remove_from:
-      output_dir = 'data/vi_word_level_data_removefrom'
+      output_dir = 'data/vi-word-level_data_removefrom'
     train_database, dev_database = read_db_split(vi_word_level_dir)
 
   if os.path.isdir(output_dir):
