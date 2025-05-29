@@ -225,8 +225,9 @@ def get_bert_output(model_bert, tokenizer, nlu_t, hds, max_seq_length):
 
     # 4. Generate BERT output.
     # all_encoder_layer, pooled_output = model_bert(all_input_ids, all_segment_ids, all_input_mask)
-    all_encoder_layer, pooled_output = model_bert(all_input_ids, attention_mask=all_input_mask, token_type_ids=None)
-    
+    outputs = model_bert(all_input_ids, attention_mask=all_input_mask, token_type_ids=None)
+    all_encoder_layer = outputs.last_hidden_state    # tensor shape: (batch_size, seq_len, hidden_size)
+    pooled_output = outputs.pooler_output            # tensor shape: (batch_size, hidden_size)    
 
     # 5. generate l_hpu from i_hds
     l_hpu = gen_l_hpu(i_hds)
