@@ -546,7 +546,8 @@ def preprocess(dataset, remove_from=False):
 
   dev_interaction = []
   for database_id in dev_database:
-    dev_interaction += interaction_list[database_id]
+    if database_id in interaction_list:
+      dev_interaction += interaction_list[database_id]
 
   print('train interaction: ', len(train_interaction))
   print('dev interaction: ', len(dev_interaction))
