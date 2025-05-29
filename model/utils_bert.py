@@ -7,49 +7,62 @@ from copy import deepcopy
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from transformers import AutoTokenizer, AutoModelForMaskedLM
 
 from .bert import tokenization as tokenization
 from .bert.modeling import BertConfig, BertModel
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# def get_bert(params):
+#     BERT_PT_PATH = './model/bert/data/annotated_wikisql_and_PyTorch_bert_param'
+#     map_bert_type_abb = {'uS': 'uncased_L-12_H-768_A-12',
+#                          'uL': 'uncased_L-24_H-1024_A-16',
+#                          'cS': 'cased_L-12_H-768_A-12',
+#                          'cL': 'cased_L-24_H-1024_A-16',
+#                          'mcS': 'multi_cased_L-12_H-768_A-12'}
+#     bert_type = map_bert_type_abb[params.bert_type_abb]
+#     if params.bert_type_abb == 'cS' or params.bert_type_abb == 'cL' or params.bert_type_abb == 'mcS':
+#         do_lower_case = False
+#     else:
+#         do_lower_case = True
+#     no_pretraining = False
+
+#     bert_config_file = os.path.join(BERT_PT_PATH, f'bert_config_{bert_type}.json')
+#     vocab_file = os.path.join(BERT_PT_PATH, f'vocab_{bert_type}.txt')
+#     # init_checkpoint = os.path.join(BERT_PT_PATH, f'pytorch_model_{bert_type}.bin')
+#     init_checkpoint = "/kaggle/input/pytorch-model/pytorch_model_uncased_L-12_H-768_A-12.bin"
+
+#     print('bert_config_file', bert_config_file)
+#     print('vocab_file', vocab_file)
+#     print('init_checkpoint', init_checkpoint)
+
+#     bert_config = BertConfig.from_json_file(bert_config_file)
+#     tokenizer = tokenization.FullTokenizer(
+#         vocab_file=vocab_file, do_lower_case=do_lower_case)
+#     bert_config.print_status()
+
+#     model_bert = BertModel(bert_config)
+#     if no_pretraining:
+#         pass
+#     else:
+#         model_bert.load_state_dict(torch.load(init_checkpoint, map_location='cpu'))
+#         print("Load pre-trained parameters.")
+#     model_bert.to(device)
+
+#     return model_bert, tokenizer, bert_config
+
 def get_bert(params):
-    BERT_PT_PATH = './model/bert/data/annotated_wikisql_and_PyTorch_bert_param'
-    map_bert_type_abb = {'uS': 'uncased_L-12_H-768_A-12',
-                         'uL': 'uncased_L-24_H-1024_A-16',
-                         'cS': 'cased_L-12_H-768_A-12',
-                         'cL': 'cased_L-24_H-1024_A-16',
-                         'mcS': 'multi_cased_L-12_H-768_A-12'}
-    bert_type = map_bert_type_abb[params.bert_type_abb]
-    if params.bert_type_abb == 'cS' or params.bert_type_abb == 'cL' or params.bert_type_abb == 'mcS':
-        do_lower_case = False
-    else:
-        do_lower_case = True
-    no_pretraining = False
+    model_name = "vinai/phobert-base"
 
-    bert_config_file = os.path.join(BERT_PT_PATH, f'bert_config_{bert_type}.json')
-    vocab_file = os.path.join(BERT_PT_PATH, f'vocab_{bert_type}.txt')
-    # init_checkpoint = os.path.join(BERT_PT_PATH, f'pytorch_model_{bert_type}.bin')
-    init_checkpoint = "/kaggle/input/pytorch-model/pytorch_model_uncased_L-12_H-768_A-12.bin"
+    # PhoBERT uses SentencePiece, so use_fast=False is recommended
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
+    model_phobert = AutoModelForMaskedLM.from_pretrained(model_name)
+    phobert_config = model_phobert.config
 
-    print('bert_config_file', bert_config_file)
-    print('vocab_file', vocab_file)
-    print('init_checkpoint', init_checkpoint)
+    model_phobert.to(device)
 
-    bert_config = BertConfig.from_json_file(bert_config_file)
-    tokenizer = tokenization.FullTokenizer(
-        vocab_file=vocab_file, do_lower_case=do_lower_case)
-    bert_config.print_status()
-
-    model_bert = BertModel(bert_config)
-    if no_pretraining:
-        pass
-    else:
-        model_bert.load_state_dict(torch.load(init_checkpoint, map_location='cpu'))
-        print("Load pre-trained parameters.")
-    model_bert.to(device)
-
-    return model_bert, tokenizer, bert_config
+    return model_phobert, tokenizer, phobert_config
 
 def generate_inputs(tokenizer, nlu1_tok, hds1):
     tokens = []

@@ -2,3 +2,4 @@
 model/*
 logs_spider_editsql/*
 processed_data_spider_removefrom/*
+word2vec_vi_words_300dims.txt
