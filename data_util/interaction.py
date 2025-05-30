@@ -128,7 +128,12 @@ class Schema:
             return column_name in self.column_names_embedder_input_to_id
 
     def column_name_embedder_bow(self, column_name, surface_form=False, column_name_token_embedder=None):
-        assert self.in_vocabulary(column_name, surface_form)
+        try:
+            assert self.in_vocabulary(column_name, surface_form)
+        except AssertionError:
+            print("Column name not in vocabulary: {}".format(column_name))
+            print("VOCAB:" + self.column_names_embedder_input_to_id)
+            raise AssertionError
         if surface_form:
             column_name_id = self.column_names_surface_form_to_id[column_name]
             column_name_embedder_input = self.column_names_embedder_input[column_name_id]
