@@ -114,6 +114,8 @@ class SequencePredictorWithSchema(torch.nn.Module):
             output_token_embedding = embedder.bow_snippets(output_token, snippets, self.output_embedder, input_schema)
         else:
             if input_schema:
+                print('OUTPUT TOKEN: ' + output_token)
+                print('OUTPUT EMBEDDER: ' + str(self.output_embedder))
                 assert self.output_embedder.in_vocabulary(output_token) or input_schema.in_vocabulary(output_token, surface_form=True)
                 if self.output_embedder.in_vocabulary(output_token):
                     output_token_embedding = self.output_embedder(output_token)
