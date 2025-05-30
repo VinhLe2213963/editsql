@@ -71,8 +71,8 @@ class Vocabulary:
 
         vocab = self.get_vocab(sequences, ignore_fn)
 
-        self.id_to_token = ['id', 'địa_điểm', 'hội_nghị']
-        self.token_to_id = {'id': 0, 'địa_điểm': 1, 'hội_nghị': 2}
+        self.id_to_token = ['id', 'địa_điểm', 'hội_nghị', 'tên']
+        self.token_to_id = {'id': 0, 'địa_điểm': 1, 'hội_nghị': 2, 'tên': 3}
 
         for i, word_type in enumerate(vocab):
             self.id_to_token.append(word_type)
