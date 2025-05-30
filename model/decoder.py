@@ -118,7 +118,6 @@ class SequencePredictorWithSchema(torch.nn.Module):
                     assert self.output_embedder.in_vocabulary(output_token) or input_schema.in_vocabulary(output_token, surface_form=True)
                 except AssertionError:
                     print("Output token not in vocabulary: ", output_token)
-                    raise AssertionError
                 if self.output_embedder.in_vocabulary(output_token):
                     output_token_embedding = self.output_embedder(output_token)
                 else:
