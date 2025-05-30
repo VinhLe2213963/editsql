@@ -149,7 +149,12 @@ class Schema:
         assert len(self.column_name_embeddings) == self.num_col
 
     def column_name_embedder(self, column_name, surface_form=False):
-        assert self.in_vocabulary(column_name, surface_form)
+        try:
+            assert self.in_vocabulary(column_name, surface_form)
+        except AssertionError:
+            print("Column name not in vocabulary: {}".format(column_name))
+            print("VOCAB:" + self.column_names_embedder_input_to_id)
+            raise AssertionError
         if surface_form:
             column_name_id = self.column_names_surface_form_to_id[column_name]
         else:
