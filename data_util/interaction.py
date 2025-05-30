@@ -132,7 +132,7 @@ class Schema:
             assert self.in_vocabulary(column_name, surface_form)
         except AssertionError:
             print("Column name not in vocabulary: {}".format(column_name))
-            print("VOCAB:" + self.column_names_embedder_input_to_id)
+            print("VOCAB:", self.column_names_embedder_input_to_id)
             raise AssertionError
         if surface_form:
             column_name_id = self.column_names_surface_form_to_id[column_name]
@@ -153,7 +153,7 @@ class Schema:
             assert self.in_vocabulary(column_name, surface_form)
         except AssertionError:
             print("Column name not in vocabulary: {}".format(column_name))
-            print("VOCAB:" + self.column_names_embedder_input_to_id)
+            print("VOCAB:", self.column_names_embedder_input_to_id)
             raise AssertionError
         if surface_form:
             column_name_id = self.column_names_surface_form_to_id[column_name]
