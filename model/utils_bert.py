@@ -53,10 +53,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 #     return model_bert, tokenizer, bert_config
 
 def get_bert(params):
-    model_name = "vinai/phobert-base"
+    model_name = "vinai/phobert-base-v2"
 
-    # PhoBERT uses SentencePiece, so use_fast=False is recommended
-    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
     model_phobert = AutoModel.from_pretrained(model_name)
     phobert_config = model_phobert.config
 
