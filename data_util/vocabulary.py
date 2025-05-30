@@ -71,8 +71,8 @@ class Vocabulary:
 
         vocab = self.get_vocab(sequences, ignore_fn)
 
-        self.id_to_token = []
-        self.token_to_id = {}
+        self.id_to_token = ['id']
+        self.token_to_id = {'id': 0}
 
         for i, word_type in enumerate(vocab):
             self.id_to_token.append(word_type)
