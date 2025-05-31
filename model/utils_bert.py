@@ -30,8 +30,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 #     bert_config_file = os.path.join(BERT_PT_PATH, f'bert_config_{bert_type}.json')
 #     vocab_file = os.path.join(BERT_PT_PATH, f'vocab_{bert_type}.txt')
-#     # init_checkpoint = os.path.join(BERT_PT_PATH, f'pytorch_model_{bert_type}.bin')
-#     init_checkpoint = "/kaggle/input/pytorch-model/pytorch_model_uncased_L-12_H-768_A-12.bin"
+#     init_checkpoint = os.path.join(BERT_PT_PATH, f'pytorch_model_{bert_type}.bin')
 
 #     print('bert_config_file', bert_config_file)
 #     print('vocab_file', vocab_file)
@@ -202,9 +201,7 @@ def get_bert_output(model_bert, tokenizer, nlu_t, hds, max_seq_length):
             input_ids1.append(0)
             input_mask1.append(0)
             segment_ids1.append(0)
-        
-        segment_ids1 = [0] * max_seq_length
-            
+
         assert len(input_ids1) == max_seq_length
         assert len(input_mask1) == max_seq_length
         assert len(segment_ids1) == max_seq_length
@@ -223,10 +220,7 @@ def get_bert_output(model_bert, tokenizer, nlu_t, hds, max_seq_length):
     all_segment_ids = torch.tensor(segment_ids, dtype=torch.long).to(device)
 
     # 4. Generate BERT output.
-    # all_encoder_layer, pooled_output = model_bert(all_input_ids, all_segment_ids, all_input_mask)
-    outputs = model_bert(all_input_ids, attention_mask=all_input_mask, token_type_ids=None)
-    all_encoder_layer = outputs.last_hidden_state    # tensor shape: (batch_size, seq_len, hidden_size)
-    pooled_output = outputs.pooler_output            # tensor shape: (batch_size, hidden_size)    
+    all_encoder_layer, pooled_output = model_bert(all_input_ids, all_segment_ids, all_input_mask)
 
     # 5. generate l_hpu from i_hds
     l_hpu = gen_l_hpu(i_hds)
